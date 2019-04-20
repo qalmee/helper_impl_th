@@ -19,10 +19,10 @@ print (_platform)
 
 if _platform == "linux" or _platform == "linux2":
     # linux
-    STOCKFISH_PATH = "stockfish_10_x64"
+    STOCKFISH_PATH = "./stockfish_10_x64"
 elif _platform == "darwin":
     # MAC OS X
-    STOCKFISH_PATH = "stockfish_10_x64"
+    STOCKFISH_PATH = "./stockfish_10_x64"   
 elif _platform == "win32":
     # Windows
     STOCKFISH_PATH = "stockfish.exe"
