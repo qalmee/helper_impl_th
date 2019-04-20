@@ -22,7 +22,7 @@ if _platform == "linux" or _platform == "linux2":
     STOCKFISH_PATH = "./stockfish_10_x64"
 elif _platform == "darwin":
     # MAC OS X
-    STOCKFISH_PATH = "./stockfish_10_x64"   
+    STOCKFISH_PATH = "stockfish-10-64"   
 elif _platform == "win32":
     # Windows
     STOCKFISH_PATH = "stockfish.exe"
