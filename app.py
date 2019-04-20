@@ -5,8 +5,10 @@ import json
 from movesfinder import MovesFinder, CheckFunc
 import questions
 import answers
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 
 #Read JSON data into the datastore variable
@@ -41,6 +43,7 @@ def post():
 
 @app.route('/get_help_start', methods=['POST'])
 def get_help_start():
+	print("START")
 	global help_asked
 	help_asked = help_asked - 1
 	json_req = request.get_json()
@@ -60,6 +63,7 @@ def get_help_start():
 
 @app.route('/get_help_end', methods=['POST'])
 def get_help_end():
+	print("END")
 	global best_move_fen
 	global repeat_flag
 	json_req = request.get_json()
@@ -69,16 +73,16 @@ def get_help_end():
 
 	game_state = checkFunc.check_state(json_req["board"])
 
-	print(json_req["board"])
-	print(best_move_fen)
-	print("repeat flag = ", repeat_flag)
+	# print(json_req["board"])
+	# print(best_move_fen)
+	# print("repeat flag = ", repeat_flag)
 	if game_state == 2:
 		answer = answers.get_victory()
 	elif json_req["board"] == best_move_fen and repeat_flag < 1:
 		answer = answers.get_good_boy()
 		repeat_flag = 5
 	repeat_flag = repeat_flag - 1
-	print("repeat flag = ", repeat_flag)
+	# print("repeat flag = ", repeat_flag)
 	print("answer = ", answer)
 
 	return json.dumps({"answer": answer})
@@ -90,8 +94,8 @@ def get_help():
 	global help_asked
 
 	json_req = request.get_json()
-	print("Input json = ", json_req)
-	print("req = ", request)
+	# print("Input json = ", json_req)
+	# print("req = ", request)
 	movesfinder = MovesFinder()
 	checkFunc = CheckFunc()
 	match = questions.find_best_match(json_req["question"])
@@ -107,7 +111,7 @@ def get_help():
 
 	game_status = movesfinder.how_best_move(json_req["board"])
 	best_move_fen = checkFunc.upd_fen(json_req["board"], game_status[3])
-	print ("best_fen = ",best_move_fen)
+	# print ("best_fen = ",best_move_fen)
 	if match[0] == 0:
 		answer = answers.get_answer_all_moves()
 		possible_moves = movesfinder.get_list_moves(json_req["board"])
@@ -119,11 +123,11 @@ def get_help():
 			figure_name = answers.get_figure(game_status[1])
 			figure_name_rod = answers.get_figure_1(game_status[1])
 			move_status = game_status[2]
-			print("fig = ", game_status[1])
-			print("figure = ",figure_name)
-			print("figure rod= ",figure_name_rod)
-			print("move status = ", move_status)
-			print("uci = ", game_status[3])
+			# print("fig = ", game_status[1])
+			# print("figure = ",figure_name)
+			# print("figure rod= ",figure_name_rod)
+			# print("move status = ", move_status)
+			# print("uci = ", game_status[3])
 			if move_status == 5:
 				answer = answers.get_right_castling()
 			elif move_status == 6:
@@ -140,16 +144,22 @@ def get_help():
 				answer += figure_name_rod + " " + game_status[3][0:2] + " " + game_status[3][2:4]
 			possible_moves = game_status[0]
 	elif match[0] == 2:
+		possible_moves = movesfinder.find_figure_moves(json_req["board"], "P")
 		answer = answers.get_answer_for_pawn_moves()
 	elif match[0] == 3:
+		possible_moves = movesfinder.find_figure_moves(json_req["board"], "K")
 		answer = answers.get_answer_for_king_moves()
 	elif match[0] == 4:
+		possible_moves = movesfinder.find_figure_moves(json_req["board"], "Q")
 		answer = answers.get_answer_for_queen_moves()
 	elif match[0] == 5:
+		possible_moves = movesfinder.find_figure_moves(json_req["board"], "R")
 		answer = answers.get_answer_for_rook_moves()
 	elif match[0] == 6:
+		possible_moves = movesfinder.find_figure_moves(json_req["board"], "N")
 		answer = answers.get_answer_for_knight_moves()
 	elif match[0] == 7:
+		possible_moves = movesfinder.find_figure_moves(json_req["board"], "B")
 		answer = answers.get_answer_for_bishop_moves()
 	elif match[0] == 8:
 		situation = checkFunc.check_castling(json_req["board"])
@@ -162,7 +172,7 @@ def get_help():
 				answer = answers.get_left_castling()
 			else:
 				answer = answers.get_right_castling()
-	elif match[0] == 10:
+	elif match[0] == 9:
 		situation = checkFunc.get_crit(json_req["board"])
 		diff = situation[0] - situation[1]
 		if diff > 15:
@@ -185,4 +195,4 @@ def init():
 
 if __name__ == '__main__':
 	port = int(os.environ.get('PORT', 8000))
-	app.run(host='0.0.0.0', port=port,debug=True)
+	app.run(host='0.0.0.0', port=port,debug=False)
