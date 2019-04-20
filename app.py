@@ -90,6 +90,8 @@ def get_help():
 	global help_asked
 
 	json_req = request.get_json()
+	print("Input json = ", json_req)
+	print("req = ", request)
 	movesfinder = MovesFinder()
 	checkFunc = CheckFunc()
 	match = questions.find_best_match(json_req["question"])

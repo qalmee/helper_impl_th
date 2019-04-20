@@ -2,6 +2,7 @@ import pdb
 import chess
 import chess.uci
 import chess.engine
+import config_stock
 
 class MovesFinder:
     _scrf = 5.0
@@ -15,7 +16,9 @@ class MovesFinder:
     _depth = 10
 
     def __init__(self):
-        self._engine = chess.uci.popen_engine('stockfish.exe')
+        path = config_stock.get_stockfish_path()
+        print("path1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! = ", path)
+        self._engine = chess.uci.popen_engine(path)
         self._engine.uci()
         self._info_handler=chess.uci.InfoHandler()
         self._engine.info_handlers.append(self._info_handler)
