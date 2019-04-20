@@ -146,21 +146,33 @@ def get_help():
 	elif match[0] == 2:
 		possible_moves = movesfinder.find_figure_moves(json_req["board"], "P")
 		answer = answers.get_answer_for_pawn_moves()
+		if len(possible_moves) == 0:
+			answer = answers.get_no_moves()
 	elif match[0] == 3:
 		possible_moves = movesfinder.find_figure_moves(json_req["board"], "K")
 		answer = answers.get_answer_for_king_moves()
+		if len(possible_moves) == 0:
+			answer = answers.get_no_moves()
 	elif match[0] == 4:
 		possible_moves = movesfinder.find_figure_moves(json_req["board"], "Q")
 		answer = answers.get_answer_for_queen_moves()
+		if len(possible_moves) == 0:
+			answer = answers.get_no_moves()
 	elif match[0] == 5:
 		possible_moves = movesfinder.find_figure_moves(json_req["board"], "R")
 		answer = answers.get_answer_for_rook_moves()
+		if len(possible_moves) == 0:
+			answer = answers.get_no_moves()
 	elif match[0] == 6:
 		possible_moves = movesfinder.find_figure_moves(json_req["board"], "N")
 		answer = answers.get_answer_for_knight_moves()
+		if len(possible_moves) == 0:
+			answer = answers.get_no_moves()
 	elif match[0] == 7:
 		possible_moves = movesfinder.find_figure_moves(json_req["board"], "B")
 		answer = answers.get_answer_for_bishop_moves()
+		if len(possible_moves) == 0:
+			answer = answers.get_no_moves()
 	elif match[0] == 8:
 		situation = checkFunc.check_castling(json_req["board"])
 		if len(situation) > 1:

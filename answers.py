@@ -6,6 +6,7 @@ queen_moves = "Вот все возможные ходы ферзя"
 bishop_moves = "Вот все возможные ходы для ваших слонов"
 knight_moves = "Вот все возможные ходы коней"
 rook_moves = "Вот все возможные ходы ладей"
+no_moves = "Мне кажется ходов для этой фигуры нет"
 all_moves = "Вот все ходы которые я смогла найти"
 suggest_castling = "Пожалуй стоит сделать рокировку"
 castling_is_allowed = "Рокируйтесь, конечно"
@@ -139,6 +140,10 @@ def get_help_cooldown():
 def get_bad_question():
     global bad_question
     return bad_question[random.randint(0, len(bad_question) - 1)]
+
+def get_no_moves():
+    global no_moves
+    return no_moves
 
 def get_answer_from_move(move):
     if "#" in move:
