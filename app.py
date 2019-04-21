@@ -142,7 +142,7 @@ def get_help():
 				else:
 					answer = answers.get_suggest_check()			
 				answer += figure_name_rod + " " + game_status[3][0:2] + " " + game_status[3][2:4]
-			possible_moves = game_status[0]
+			possible_moves.append(game_status[0])
 	elif match[0] == 2:
 		possible_moves = movesfinder.find_figure_moves(json_req["board"], "P")
 		answer = answers.get_answer_for_pawn_moves()
